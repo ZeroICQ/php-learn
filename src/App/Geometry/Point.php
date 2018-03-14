@@ -23,6 +23,17 @@ class Point
     }
 
     /**
+     * @param Point $other
+     * @return float
+     */
+    public function distance(Point $other): float
+    {
+        return sqrt(
+            pow($this->x - $other->getX(), 2) + pow($this->y - $other->getY(), 2)
+        );
+    }
+
+    /**
      * @return float
      */
     public function getX(): float
@@ -36,15 +47,5 @@ class Point
     public function getY(): float
     {
         return $this->y;
-    }
-
-    /**
-     * @return float
-     */
-    public function distance(Point $other): float
-    {
-        return sqrt(
-            pow($this->x - $other->getX(), 2) + pow($this->y - $other->getY(), 2)
-        );
     }
 }
