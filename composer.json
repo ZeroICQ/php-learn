@@ -16,6 +16,7 @@
     "autoload-dev": {
         "psr-4": {
             "AppTest\\": "tests/AppTest",
+            "TestUtils\\": "tests/Utils"
         }
     },
     "require": {
