@@ -16,6 +16,10 @@ class Point
      */
     private $y;
 
+    /**
+     * @param float $x
+     * @param float $y
+     */
     public function __construct(float $x, float $y)
     {
         $this->x = $x;
