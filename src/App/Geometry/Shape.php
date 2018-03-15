@@ -6,7 +6,7 @@ namespace App\Geometry;
 
 abstract class Shape implements ShapeInterface
 {
-    protected const SHAPE_NAME = 'S';
+    protected const SHAPE_NAME = 'shape';
 
     /**
      * @return string
