@@ -39,24 +39,24 @@ class LineTest extends TestCase
     }
 
 
-
+    /**
+     * @return array
+     */
     public function randomCoords()
     {
-        $min = -5000;
-        $max = 1000;
-        $amount = 50;
+        $min = -50000;
+        $max = 50000;
+        $amount = 20;
+        $coords = 4;
+        $vector = [];
 
-        $vector = new SplFixedArray($amount);
+        for ($i = 0; $i < $amount; $i++) {
+            $vector[$i] = [];
 
-        foreach ($vector as $index => $item) {
-            $vector[$index] = new SplFixedArray(4);
-
-            foreach ($vector[$index] as $j => $value) {
-                $vector[$index][$j] = MathUtils::randomFloat($min, $max);
+            for ($j = 0; $j < $coords; $j++) {
+                $vector[$i][$j] = MathUtils::randomFloat($min, $max);
             }
-            $vector[$index] = $vector[$index]->toArray();
         }
-        return $vector->toArray();
-
+        return $vector;
     }
 }
