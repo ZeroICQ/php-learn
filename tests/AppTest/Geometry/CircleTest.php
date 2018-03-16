@@ -6,6 +6,7 @@ namespace AppTest\Geometry;
 use App\Geometry\Circle;
 use PHPUnit\Framework\TestCase;
 use TestUtils\MathUtils;
+use TestUtils\CoordUtils;
 
 class CircleTest extends TestCase
 {
@@ -41,24 +42,14 @@ class CircleTest extends TestCase
      */
     public function randomCoords(): array
     {
-        $min = -50000;
-        $max = 50000;
-        $amount = 20;
-        $coords = 2;
         $radiusMax = 10000;
         $radiusMin = 0;
 
-        $vector = [];
+        $vector = CoordUtils::getArrayRandom2DCoords();
+        array_walk($vector, function(&$coords) use ($radiusMin, $radiusMax) {
+            array_push($coords, MathUtils::randomFloat($radiusMin, $radiusMax));
+        });
 
-        for ($i = 0; $i < $amount; $i++) {
-            $vector[$i] = [];
-
-            for ($j = 0; $j < $coords; $j++) {
-                $vector[$i][$j] = MathUtils::randomFloat($min, $max);
-            }
-
-            $vector[$i][$coords] = MathUtils::randomFloat($radiusMin, $radiusMax);
-        }
         return $vector;
     }
 }

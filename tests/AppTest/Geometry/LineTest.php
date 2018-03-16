@@ -8,6 +8,7 @@ use App\Geometry\Line;
 use PHPUnit\Framework\TestCase;
 use SplFixedArray;
 use TestUtils\MathUtils;
+use TestUtils\CoordUtils;
 
 class LineTest extends TestCase
 {
@@ -42,21 +43,8 @@ class LineTest extends TestCase
     /**
      * @return array
      */
-    public function randomCoords()
+    public function randomCoords(): array
     {
-        $min = -50000;
-        $max = 50000;
-        $amount = 20;
-        $coords = 4;
-        $vector = [];
-
-        for ($i = 0; $i < $amount; $i++) {
-            $vector[$i] = [];
-
-            for ($j = 0; $j < $coords; $j++) {
-                $vector[$i][$j] = MathUtils::randomFloat($min, $max);
-            }
-        }
-        return $vector;
+        return CoordUtils::getArrayRandom2DCoords(4);
     }
 }
