@@ -74,4 +74,68 @@ class Rectangle extends Shape
     {
         return 2 *  $this->getLength() + 2 * $this->getWidth();
     }
+
+    /**
+     * @return Point
+     */
+    public function getTopLeft(): Point
+    {
+        return $this->topLeft;
+    }
+
+    /**
+     * @param Point $topLeft
+     */
+    public function setTopLeft(Point $topLeft): void
+    {
+        $this->topLeft = $topLeft;
+    }
+
+    /**
+     * @return Point
+     */
+    public function getTopRight(): Point
+    {
+        return $this->topRight;
+    }
+
+    /**
+     * @param Point $topRight
+     */
+    public function setTopRight(Point $topRight): void
+    {
+        $this->topRight = $topRight;
+    }
+
+    /**
+     * @return Point
+     */
+    public function getBottomRight(): Point
+    {
+        return $this->bottomRight;
+    }
+
+    /**
+     * @param Point $bottomRight
+     */
+    public function setBottomRight(Point $bottomRight): void
+    {
+        $this->bottomRight = $bottomRight;
+    }
+
+    /**
+     * @return Point
+     */
+    public function getBottomLeft(): Point
+    {
+        return $this->bottomLeft;
+    }
+
+    /**
+     * @param Point $bottomLeft
+     */
+    public function setBottomLeft(Point $bottomLeft): void
+    {
+        $this->bottomLeft = $bottomLeft;
+    }
 }

@@ -57,11 +57,29 @@ class Point extends Shape
     }
 
     /**
+     * @param float $x
+     */
+    public function setX(float $x): void
+    {
+        $this->x = $x;
+    }
+
+    /**
      * @return float
      */
     public function getY(): float
     {
         return $this->y;
+    }
+
+    /**
+     * @param float $y
+     * @return Point
+     */
+    public function setY(float $y): Point
+    {
+        $this->y = $y;
+        return $this;
     }
 
     /**

@@ -46,4 +46,36 @@ class Line extends Shape
     {
         return $this->start->distance($this->end);
     }
+
+    /**
+     * @return Point
+     */
+    public function getStart(): Point
+    {
+        return $this->start;
+    }
+
+    /**
+     * @param Point $start
+     */
+    public function setStart(Point $start): void
+    {
+        $this->start = $start;
+    }
+
+    /**
+     * @return Point
+     */
+    public function getEnd(): Point
+    {
+        return $this->end;
+    }
+
+    /**
+     * @param Point $end
+     */
+    public function setEnd(Point $end): void
+    {
+        $this->end = $end;
+    }
 }
