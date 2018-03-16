@@ -40,6 +40,15 @@ class Point extends Shape
     }
 
     /**
+     * @param Point $point
+     * @return bool
+     */
+    public function isEqualTo(Point $point)
+    {
+        return $this->getX() == $point->getX() && $this->getY() == $point->getY();
+    }
+
+    /**
      * @return float
      */
     public function getX(): float
