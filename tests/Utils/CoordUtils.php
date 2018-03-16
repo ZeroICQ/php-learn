@@ -27,9 +27,10 @@ class CoordUtils
 
     public static function getArrayRandom2DCoords(
         int $size=2,
+        int $amount=10,
         float $min=-50000,
-        float $max=50000,
-        int $amount=10
+        float $max=50000
+
     ): array {
         $vector = [];
         for ($i = 0; $i < $amount; $i++) {
