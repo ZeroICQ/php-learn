@@ -20,4 +20,10 @@ interface ShapeInterface
      * @return float
      */
     public function getPerimeter(): float;
+
+    /**
+     * @param Shape $shape
+     * @return bool
+     */
+    public function isContains(Shape $shape): bool;
 }
