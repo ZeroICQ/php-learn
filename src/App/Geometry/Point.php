@@ -4,8 +4,10 @@
 namespace App\Geometry;
 
 
-class Point
+class Point extends Shape
 {
+    protected const SHAPE_NAME = 'point';
+
     /**
      * @var float
      */
@@ -51,5 +53,30 @@ class Point
     public function getY(): float
     {
         return $this->y;
+    }
+
+    /**
+     * @return float
+     */
+    public function getArea(): float
+    {
+        return 0;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPerimeter(): float
+    {
+        return 0;
+    }
+
+    /**
+     * @param Shape $shape
+     * @return bool
+     */
+    public function isContains(Shape $shape): bool
+    {
+        return $shape->getName() == 'point' && $this->isEqualTo($shape);
     }
 }
