@@ -12,7 +12,7 @@ class CircleTest extends TestCase
 {
 
     /**
-     * @dataProvider randomCoords
+     * @dataProvider rndCoordsProvider
      * @param float $x
      * @param float $y
      * @param float $radius
@@ -25,7 +25,7 @@ class CircleTest extends TestCase
     }
 
     /**
-     * @dataProvider randomCoords
+     * @dataProvider rndCoordsProvider
      * @param float $x
      * @param float $y
      * @param float $radius
@@ -40,7 +40,7 @@ class CircleTest extends TestCase
     /**
      * @return array
      */
-    public function randomCoords(): array
+    public function rndCoordsProvider(): array
     {
         $radiusMax = 10000;
         $radiusMin = 0;

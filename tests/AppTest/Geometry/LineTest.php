@@ -13,7 +13,7 @@ use TestUtils\CoordUtils;
 class LineTest extends TestCase
 {
     /**
-     * @dataProvider randomCoords
+     * @dataProvider rndCoordsProvider
      * @param float $x1
      * @param float $y1
      * @param float $x2
@@ -27,7 +27,7 @@ class LineTest extends TestCase
     }
 
     /**
-     * @dataProvider randomCoords
+     * @dataProvider rndCoordsProvider
      * @param $x1
      * @param $y1
      * @param $x2
@@ -43,7 +43,7 @@ class LineTest extends TestCase
     /**
      * @return array
      */
-    public function randomCoords(): array
+    public function rndCoordsProvider(): array
     {
         return CoordUtils::getArrayRandom2DCoords(4);
     }

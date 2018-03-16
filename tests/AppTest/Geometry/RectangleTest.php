@@ -11,7 +11,7 @@ use TestUtils\CoordUtils;
 class RectangleTest extends TestCase
 {
     /**
-     * @dataProvider randomCoords
+     * @dataProvider rndCoordsProvider
      *
      * @param float $x1
      * @param float $y1
@@ -26,7 +26,7 @@ class RectangleTest extends TestCase
     }
 
     /**
-     * @dataProvider randomCoords
+     * @dataProvider rndCoordsProvider
      *
      * @param float $x1
      * @param float $y1
@@ -41,7 +41,7 @@ class RectangleTest extends TestCase
     }
 
     /**
-     * @dataProvider randomCoords
+     * @dataProvider rndCoordsProvider
      *
      * @param float $x1
      * @param float $y1
@@ -56,7 +56,7 @@ class RectangleTest extends TestCase
     }
 
     /**
-     * @dataProvider randomCoords
+     * @dataProvider rndCoordsProvider
      *
      * @param float $x1
      * @param float $y1
@@ -73,7 +73,7 @@ class RectangleTest extends TestCase
     /**
      * @return array
      */
-    public function randomCoords()
+    public function rndCoordsProvider()
     {
         return CoordUtils::getArrayRandom2DCoords(4);
     }
