@@ -5,8 +5,8 @@ namespace AppTest\AppTest\Geometry;
 
 
 use App\Geometry\Line;
+use App\Geometry\Point;
 use PHPUnit\Framework\TestCase;
-use SplFixedArray;
 use TestUtils\MathUtils;
 use TestUtils\CoordUtils;
 
@@ -37,6 +37,38 @@ class LineTest extends TestCase
     {
         $line = new Line($x1, $y1, $x2, $y2);
         $this->assertEquals(0, $line->getArea());
+    }
+
+    /**
+     * @dataProvider rndCoordsProvider
+     * @param $x1
+     * @param $y1
+     * @param $x2
+     * @param $y2
+     */
+    public function testContainsPointAtEndsRnd($x1, $y1, $x2, $y2)
+    {
+        $line = new Line($x1, $y1, $x2, $y2);
+        $p1 = new Point($x1, $y1);
+        $p2 = new Point($x2, $y2);
+
+        $this->assertTrue($line->isContains($p1));
+        $this->assertTrue($line->isContains($p2));
+    }
+
+    /**
+     * @dataProvider rndCoordsProvider
+     * @param $x1
+     * @param $y1
+     * @param $x2
+     * @param $y2
+     */
+    public function testContainsPointNot($x1, $y1, $x2, $y2)
+    {
+        $line = new Line(0, 0, 23, 23);
+        $p1 = new Point(1,0.1);
+
+        $this->assertFalse($line->isContains($p1));
     }
 
 
