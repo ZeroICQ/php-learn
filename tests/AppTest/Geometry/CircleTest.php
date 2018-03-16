@@ -39,7 +39,7 @@ class CircleTest extends TestCase
     /**
      * @return array
      */
-    public function randomCoords()
+    public function randomCoords(): array
     {
         $min = -50000;
         $max = 50000;
