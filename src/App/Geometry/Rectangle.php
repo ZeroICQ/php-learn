@@ -76,6 +76,82 @@ class Rectangle extends Shape
     }
 
     /**
+     * @param Shape $shape
+     * @return bool
+     */
+    public function isContains(Shape $shape): bool
+    {
+        switch ($shape->getName()) {
+            case 'point':
+                return $this->isContainsPoint($shape);
+            case 'line':
+                return $this->isContainsLine($shape);
+            case 'circle':
+                return $this->isContainsCircle($shape);
+            case 'rectangle':
+                return $this->isContainsRectangle($shape);
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * @param Point $point
+     * @return bool
+     */
+    public function isContainsPoint(Point $point): bool
+    {
+        return  $this->getTopLeft()->getX() <= $point->getX()
+            && $this->getTopRight()->getX() >= $point->getX()
+            && $this->getTopLeft()->getY() >= $point->getY()
+            && $this->getBottomRight()->getY() <= $point->getY();
+    }
+
+    /**
+     * @param Line $line
+     * @return bool
+     */
+    public function isContainsLine(Line $line): bool
+    {
+        return $this->isContainsPoint($line->getStart()) && $this->isContainsPoint($line->getEnd());
+    }
+
+    /**
+     * @param Circle $circle
+     * @return bool
+     */
+    public function isContainsCircle(Circle $circle): bool
+    {
+        $rectCenter = new Point(
+            abs($this->getTopLeft()->getX() - $this->getBottomRight()->getX()) / 2,
+            abs($this->getTopLeft()->getY() - $this->getBottomRight()->getY()) / 2
+        );
+
+        $centersDistance = $rectCenter->distance($circle->getCenter());
+        return $circle->getRadius() + $centersDistance <= min($this->getWidth(), $this->getLength());
+    }
+
+    /**
+     * @param Rectangle $rect
+     * @return bool
+     */
+    public function isContainsRectangle(Rectangle $rect): bool
+    {
+        $isTopLeftOk = $this->getTopLeft()->getX() <= $rect->getTopLeft()->getX()
+            && $this->getTopLeft()->getY() >= $rect->getTopLeft()->getY();
+
+        $isTopRightOk = $this->getTopRight()->getX() >= $rect->getTopRight()->getX()
+            && $this->getTopRight()->getY() >= $rect->getTopRight()->getY();
+
+        $isBottomRightOk = $this->getBottomRight()->getX() >= $rect->getBottomRight()->getX()
+            && $this->getBottomRight()->getY() <= $rect->getBottomRight()->getY();
+
+        $isBottomLeftOk = $this->getBottomLeft()->getX() <= $rect->getBottomLeft()->getX()
+            && $this->getBottomLeft()->getY() >= $rect->getBottomLeft()->getY();
+
+        return $isTopLeftOk && $isTopRightOk && $isBottomRightOk && $isBottomLeftOk;
+    }
+    /**
      * @return Point
      */
     public function getTopLeft(): Point

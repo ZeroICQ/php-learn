@@ -106,4 +106,5 @@ class Point extends Shape
     {
         return $shape->getName() == 'point' && $this->isEqualTo($shape);
     }
+
 }
