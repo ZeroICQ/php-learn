@@ -49,6 +49,28 @@ class Line extends Shape
     }
 
     /**
+     * Ax+By+C=0
+     * @return array
+     */
+    public function getLineEquationCoeefs(): array
+    {
+        $y1 = $this->getStart()->getY();
+        $y2 = $this->getEnd()->getY();
+
+        $x1 = $this->getStart()->getX();
+        $x2 = $this->getEnd()->getX();
+
+        $A = $y1 - $y2;
+        $B = $x2 - $x1;
+        $C = $x1 * $y2 - $x2 * $y1;
+        return [
+            'A' => $A,
+            'B' => $B,
+            'C' => $C
+        ];
+    }
+
+    /**
      * @param Shape $shape
      * @return bool
      */
@@ -80,8 +102,9 @@ class Line extends Shape
         $x1 = $this->getStart()->getX();
         $x2 = $this->getEnd()->getX();
 
-//      TODO: check for zero division
-        $isLineEquation = abs(($y - $y1) / ($y2 - $y1) - ($x-$x1) / ($x2 - $x1)) < $eps;
+        $coeffs = $this->getLineEquationCoeefs();
+
+        $isLineEquation = abs($coeffs['A'] * $x + $coeffs['B'] * $y + $coeffs['C']) <= $eps;
         $isInXRange = min($x1, $x2) <= $x && $x <= max($x1, $x2);
         return $isLineEquation && $isInXRange;
     }
