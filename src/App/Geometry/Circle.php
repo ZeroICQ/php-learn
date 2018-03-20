@@ -26,7 +26,7 @@ class Circle extends Shape
      */
     public function __construct(float $x, float $y, float $radius)
     {
-        $center = new Point($x, $y);
+        $this->center = new Point($x, $y);
         $this->radius = $radius;
     }
 
@@ -143,5 +143,15 @@ class Circle extends Shape
     public function setRadius(float $radius): void
     {
         $this->radius = $radius;
+    }
+
+    /**
+     * @param Shape $shape
+     * @return bool
+     */
+    public function isIntersect(Shape $shape): bool
+    {
+        // TODO: Implement isIntersect() method.
+        return false;
     }
 }

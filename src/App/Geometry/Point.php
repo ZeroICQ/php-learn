@@ -107,4 +107,13 @@ class Point extends Shape
         return $shape->getName() == 'point' && $this->isEqualTo($shape);
     }
 
+    /**
+     * @param Shape $shape
+     * @return bool
+     */
+    public function isIntersect(Shape $shape): bool
+    {
+        return $shape->isContains($this);
+    }
+
 }

@@ -71,6 +71,14 @@ class LineTest extends TestCase
         $this->assertFalse($line->isContains($p1));
     }
 
+    public  function provider(): array
+    {
+        return [
+            [[0, 0, 23, 23], [1, 0.1], false], //
+
+        ];
+    }
+
 
     /**
      * @return array

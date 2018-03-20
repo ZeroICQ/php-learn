@@ -214,4 +214,14 @@ class Rectangle extends Shape
     {
         $this->bottomLeft = $bottomLeft;
     }
+
+    /**
+     * @param Shape $shape
+     * @return bool
+     */
+    public function isIntersect(Shape $shape): bool
+    {
+        // TODO: Implement isIntersect() method.
+        return false;
+    }
 }

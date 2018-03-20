@@ -119,6 +119,60 @@ class Line extends Shape
     }
 
     /**
+     * @param Shape $shape
+     * @return bool
+     */
+    public function isIntersect(Shape $shape): bool
+    {
+        switch ($shape->getName()) {
+            case 'point':
+                return $this->isContains($shape);
+            case 'line':
+                return $this->isIntersectLine($shape);
+            case 'circle':
+                return $this->isIntersectCircle($shape);
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * @param Line $line
+     * @return bool
+     */
+    public function isIntersectLine(Line $line): bool
+    {
+        $c1 = $this->getLineEquationCoeefs();
+        $c2 = $this->getLineEquationCoeefs();
+
+        //parallel or same
+        return !($c1['A'] * $c2['B'] - $c2['A'] * $c1['B'])
+            || $this->isContains($line->getStart());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIntersectCircle(Circle $circle): bool
+    {
+        //        AND IN RANGE!!
+        $r = $circle->getRadius();
+        return $this->getDistanceToPoint($circle);
+    }
+
+    /**
+     * @param Point $point
+     * @return float
+     */
+    public function getDistanceToPoint(Point $point): float
+    {
+        $coeffs = $this->getLineEquationCoeefs();
+        return abs(
+            ($coeffs['A'] * $point->getX() + $coeffs['B'] * $point->getY() + $coeffs['C'])
+            / sqrt(pow($coeffs['A'], 2) + pow($coeffs['B'], 2))
+        );
+    }
+    /**
      * @return Point
      */
     public function getStart(): Point
