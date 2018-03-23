@@ -4,29 +4,17 @@
 namespace App\Geometry;
 
 
-class Rectangle extends Shape
+class Rectangle implements ShapeInterface
 {
-    protected const SHAPE_NAME = 'rectangle';
+    /**
+     * @var Point
+     */
+    private $topLeft;
 
     /**
      * @var Point
      */
-    protected $topLeft;
-
-    /**
-     * @var Point
-     */
-    protected $topRight;
-
-    /**
-     * @var Point
-     */
-    protected $bottomRight;
-
-    /**
-     * @var Point
-     */
-    protected $bottomLeft;
+    private $bottomRight;
 
     /**
      * Rectangle constructor.
@@ -38,9 +26,15 @@ class Rectangle extends Shape
     public function __construct(float $x1, float $y1, float $x2, float $y2)
     {
         $this->topLeft = new Point($x1, $y1);
-        $this->topRight = new Point($x2, $y1);
         $this->bottomRight = new Point($x2, $y2);
-        $this->bottomLeft = new Point($x1, $y2);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'rectangle';
     }
 
     /**
@@ -48,7 +42,7 @@ class Rectangle extends Shape
      */
     public function getLength(): float
     {
-        return $this->topLeft->distance($this->topRight);
+        return $this->topLeft->distance($this->getTopRight());
     }
 
     /**
@@ -56,7 +50,7 @@ class Rectangle extends Shape
      */
     public function getWidth(): float
     {
-        return $this->topRight->distance($this->bottomRight);
+        return $this->getTopRight()->distance($this->bottomRight);
     }
 
     /**
@@ -72,85 +66,142 @@ class Rectangle extends Shape
      */
     public function getPerimeter(): float
     {
-        return 2 *  $this->getLength() + 2 * $this->getWidth();
+        return 2 * ($this->getLength() + $this->getWidth());
     }
 
     /**
-     * @param Shape $shape
-     * @return bool
+     * @return Segment
      */
-    public function isContains(Shape $shape): bool
+    public function getUpperSide(): Segment
     {
-        switch ($shape->getName()) {
-            case 'point':
-                return $this->isContainsPoint($shape);
-            case 'line':
-                return $this->isContainsLine($shape);
-            case 'circle':
-                return $this->isContainsCircle($shape);
-            case 'rectangle':
-                return $this->isContainsRectangle($shape);
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * @param Point $point
-     * @return bool
-     */
-    public function isContainsPoint(Point $point): bool
-    {
-        return  $this->getTopLeft()->getX() <= $point->getX()
-            && $this->getTopRight()->getX() >= $point->getX()
-            && $this->getTopLeft()->getY() >= $point->getY()
-            && $this->getBottomRight()->getY() <= $point->getY();
-    }
-
-    /**
-     * @param Segment $line
-     * @return bool
-     */
-    public function isContainsLine(Segment $line): bool
-    {
-        return $this->isContainsPoint($line->getStart()) && $this->isContainsPoint($line->getEnd());
-    }
-
-    /**
-     * @param Circle $circle
-     * @return bool
-     */
-    public function isContainsCircle(Circle $circle): bool
-    {
-        $rectCenter = new Point(
-            abs($this->getTopLeft()->getX() - $this->getBottomRight()->getX()) / 2,
-            abs($this->getTopLeft()->getY() - $this->getBottomRight()->getY()) / 2
+        return new Segment(
+            $this->getTopLeft()->getX(), $this->getTopLeft()->getY(),
+            $this->getTopRight()->getX(), $this->getTopRight()->getY()
         );
-
-        $centersDistance = $rectCenter->distance($circle->getCenter());
-        return $circle->getRadius() + $centersDistance <= min($this->getWidth(), $this->getLength());
     }
 
     /**
-     * @param Rectangle $rect
-     * @return bool
+     * @return Segment
      */
-    public function isContainsRectangle(Rectangle $rect): bool
+    public function getRightSide(): Segment
     {
-        $isTopLeftOk = $this->getTopLeft()->getX() <= $rect->getTopLeft()->getX()
-            && $this->getTopLeft()->getY() >= $rect->getTopLeft()->getY();
-
-        $isTopRightOk = $this->getTopRight()->getX() >= $rect->getTopRight()->getX()
-            && $this->getTopRight()->getY() >= $rect->getTopRight()->getY();
-
-        $isBottomRightOk = $this->getBottomRight()->getX() >= $rect->getBottomRight()->getX()
-            && $this->getBottomRight()->getY() <= $rect->getBottomRight()->getY();
-
-        $isBottomLeftOk = $this->getBottomLeft()->getX() <= $rect->getBottomLeft()->getX()
-            && $this->getBottomLeft()->getY() >= $rect->getBottomLeft()->getY();
-
-        return $isTopLeftOk && $isTopRightOk && $isBottomRightOk && $isBottomLeftOk;
+        return new Segment(
+            $this->getTopRight()->getX(), $this->getTopRight()->getY(),
+            $this->getBottomRight()->getX(), $this->getBottomRight()->getY()
+        );
     }
+
+    /**
+     * @return Segment
+     */
+    public function getBottomSide(): Segment
+    {
+        return new Segment(
+            $this->getBottomRight()->getX(), $this->getBottomRight()->getY(),
+            $this->getBottomLeft()->getX(), $this->getBottomLeft()->getY()
+        );
+    }
+
+    /**
+     * @return Segment
+     */
+    public function getLeftSide(): Segment
+    {
+        return new Segment(
+            $this->getBottomLeft()->getX(), $this->getBottomLeft()->getY(),
+            $this->getTopLeft()->getX(), $this->getTopLeft()->getY()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getSides(): array
+    {
+        return [
+            $this->getUpperSide(),
+            $this->getRightSide(),
+            $this->getBottomSide(),
+            $this->getLeftSide(),
+        ];
+    }
+//    /**
+//     * @param Shape $shape
+//     * @return bool
+//     */
+//    public function isContains(Shape $shape): bool
+//    {
+//        switch ($shape->getName()) {
+//            case 'point':
+//                return $this->isContainsPoint($shape);
+//            case 'line':
+//                return $this->isContainsLine($shape);
+//            case 'circle':
+//                return $this->isContainsCircle($shape);
+//            case 'rectangle':
+//                return $this->isContainsRectangle($shape);
+//            default:
+//                return false;
+//        }
+//    }
+//
+//    /**
+//     * @param Point $point
+//     * @return bool
+//     */
+//    public function isContainsPoint(Point $point): bool
+//    {
+//        return  $this->getTopLeft()->getX() <= $point->getX()
+//            && $this->getTopRight()->getX() >= $point->getX()
+//            && $this->getTopLeft()->getY() >= $point->getY()
+//            && $this->getBottomRight()->getY() <= $point->getY();
+//    }
+//
+//    /**
+//     * @param Segment $line
+//     * @return bool
+//     */
+//    public function isContainsLine(Segment $line): bool
+//    {
+//        return $this->isContainsPoint($line->getStart()) && $this->isContainsPoint($line->getEnd());
+//    }
+//
+//    /**
+//     * @param Circle $circle
+//     * @return bool
+//     */
+//    public function isContainsCircle(Circle $circle): bool
+//    {
+//        $rectCenter = new Point(
+//            abs($this->getTopLeft()->getX() - $this->getBottomRight()->getX()) / 2,
+//            abs($this->getTopLeft()->getY() - $this->getBottomRight()->getY()) / 2
+//        );
+//
+//        $centersDistance = $rectCenter->distance($circle->getCenter());
+//        return $circle->getRadius() + $centersDistance <= min($this->getWidth(), $this->getLength());
+//    }
+//
+//    /**
+//     * @param Rectangle $rect
+//     * @return bool
+//     */
+//    public function isContainsRectangle(Rectangle $rect): bool
+//    {
+//        $isTopLeftOk = $this->getTopLeft()->getX() <= $rect->getTopLeft()->getX()
+//            && $this->getTopLeft()->getY() >= $rect->getTopLeft()->getY();
+//
+//        $isTopRightOk = $this->getTopRight()->getX() >= $rect->getTopRight()->getX()
+//            && $this->getTopRight()->getY() >= $rect->getTopRight()->getY();
+//
+//        $isBottomRightOk = $this->getBottomRight()->getX() >= $rect->getBottomRight()->getX()
+//            && $this->getBottomRight()->getY() <= $rect->getBottomRight()->getY();
+//
+//        $isBottomLeftOk = $this->getBottomLeft()->getX() <= $rect->getBottomLeft()->getX()
+//            && $this->getBottomLeft()->getY() >= $rect->getBottomLeft()->getY();
+//
+//        return $isTopLeftOk && $isTopRightOk && $isBottomRightOk && $isBottomLeftOk;
+//    }
+
     /**
      * @return Point
      */
@@ -160,27 +211,11 @@ class Rectangle extends Shape
     }
 
     /**
-     * @param Point $topLeft
-     */
-    public function setTopLeft(Point $topLeft): void
-    {
-        $this->topLeft = $topLeft;
-    }
-
-    /**
      * @return Point
      */
     public function getTopRight(): Point
     {
-        return $this->topRight;
-    }
-
-    /**
-     * @param Point $topRight
-     */
-    public function setTopRight(Point $topRight): void
-    {
-        $this->topRight = $topRight;
+        return new Point($this->getBottomRight()->getX(), $this->getTopLeft()->getY());
     }
 
     /**
@@ -192,36 +227,10 @@ class Rectangle extends Shape
     }
 
     /**
-     * @param Point $bottomRight
-     */
-    public function setBottomRight(Point $bottomRight): void
-    {
-        $this->bottomRight = $bottomRight;
-    }
-
-    /**
      * @return Point
      */
     public function getBottomLeft(): Point
     {
-        return $this->bottomLeft;
-    }
-
-    /**
-     * @param Point $bottomLeft
-     */
-    public function setBottomLeft(Point $bottomLeft): void
-    {
-        $this->bottomLeft = $bottomLeft;
-    }
-
-    /**
-     * @param Shape $shape
-     * @return bool
-     */
-    public function isIntersect(Shape $shape): bool
-    {
-        // TODO: Implement isIntersect() method.
-        return false;
+        return new Point($this->getTopLeft()->getX(), $this->getBottomRight()->getY());
     }
 }

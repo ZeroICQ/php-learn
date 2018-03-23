@@ -43,6 +43,29 @@ abstract class GeometryUtils
         } elseif ($name1 == 'circle' && $name2 == 'segment') {
             return self::isSegmentIntersectsCircle($shape2, $shape1);
         }
+        //Point-Circle
+        if ($name1 == 'point' && $name2 == 'circle') {
+            return self::isPointIntersectsCircle($shape1, $shape2);
+        } elseif ($name1 == 'circle' && $name2 == 'point') {
+            return self::isPointIntersectsCircle($shape2, $shape1);
+        }
+        //Circle-Circle
+        if ($name1 == 'circle' && $name2 == 'circle') {
+            return self::isCircleIntersectsCircle($shape1, $shape2);
+        }
+        //Rectangle-Point
+        if ($name1 == 'rectangle' && $name2 == 'point') {
+            return self::isRectangleIntersectsPoint($shape1, $shape2);
+        } elseif ($name1 == 'point' && $name2 == 'rectangle') {
+            return self::isRectangleIntersectsPoint($shape2, $shape1);
+        }
+        //Rectangle-Segment
+        if ($name1 == 'rectangle' && $name2 == 'segment') {
+            return self::isRectangleIntersectsSegment($shape1, $shape2);
+        } elseif ($name1 == 'segment' && $name2 == 'rectangle') {
+            return self::isRectangleIntersectsSegment($shape2, $shape1);
+        }
+
 
         return false;
     }
@@ -200,6 +223,58 @@ abstract class GeometryUtils
     }
 
     /**
+     * @param Point $point
+     * @param Circle $circle
+     * @return bool
+     */
+    private static function isPointIntersectsCircle(Point $point, Circle $circle): bool
+    {
+        return abs(pow($point->getX() - $circle->getCenter()->getX(), 2)
+             + pow($point->getY() - $circle->getCenter()->getY(), 2)
+             - pow($circle->getRadius(), 2)) < self::EPS;
+    }
+
+    /**
+     * @param Circle $circle1
+     * @param Circle $circle2
+     * @return bool
+     */
+    private static function isCircleIntersectsCircle(Circle $circle1, Circle $circle2): bool
+    {
+        return $circle1->getCenter()->distance($circle2->getCenter()) < $circle1->getRadius() + $circle2->getRadius();
+    }
+
+    /**
+     * @param Rectangle $rect
+     * @param Point $point
+     * @return bool
+     */
+    private static function isRectangleIntersectsPoint(Rectangle $rect, Point $point): bool
+    {
+        foreach ($rect->getSides() as $side) {
+            if (GeometryUtils::isIntersects($side, $point)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param Rectangle $rect
+     * @param Segment $segment
+     * @return bool
+     */
+    private static function isRectangleIntersectsSegment(Rectangle $rect, Segment $segment): bool
+    {
+        foreach ($rect->getSides() as $side) {
+            if (GeometryUtils::isIntersects($side, $segment)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param Point $point1
      * @param Point $point2
      * @return bool
@@ -209,7 +284,12 @@ abstract class GeometryUtils
         return $point1->isEqualTo($point2);
     }
 
-    private static function isSegmentContainsSegment(Segment $segment1, Segment $segment2)
+    /**
+     * @param Segment $segment1
+     * @param Segment $segment2
+     * @return bool
+     */
+    private static function isSegmentContainsSegment(Segment $segment1, Segment $segment2): bool
     {
         return $segment1->getStart()->isEqualTo($segment2->getStart())
             && $segment1->getEnd()->isEqualTo($segment2->getEnd());
