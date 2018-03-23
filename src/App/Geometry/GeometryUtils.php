@@ -76,7 +76,6 @@ abstract class GeometryUtils
             return self::isRectangleIntersectsCircle($shape2, $shape1);
         }
 
-
         return false;
     }
 
@@ -89,19 +88,57 @@ abstract class GeometryUtils
     {
         $name1 = $shape1->getName();
         $name2 = $shape2->getName();
-        // Point-Point
-        if ($name1 == 'point' && $name2 == 'point') {
-            return self::isPointContainsPoint($shape1, $shape2);
+        //Point
+        if ($name1 == 'point') {
+            if ($name2 == 'point') {
+                return self::isPointContainsPoint($shape1, $shape2);
+            } else {
+                return false;
+            }
         }
-        //Point-Segment
-        if ($name1 == 'point' && $name2 == 'segment'){
-            return self::isPointIntersectsSegment($shape1, $shape2);
-        } elseif ($name1 == 'segment' && $name2 == 'point') {
-            return self::isPointIntersectsSegment($shape2, $shape1);
+        //Segment
+        if ($name1 == 'segment') {
+            if ($name2 == 'point') {
+                return self::isSegmentContainsPoint($shape1, $shape2);
+            } elseif ($name2 == 'segment') {
+                return self::isSegmentContainsSegment($shape1, $shape2);
+            } else {
+                return false;
+            }
         }
-        //Segment-Segment
-        if ($name1 == 'segment' && $name2 == 'segment') {
-            return self::isSegmentContainsSegment($shape1, $shape2);
+
+        //Circle-Point
+        if ($name1 == 'circle' && $name2 == 'point') {
+            return self::isCircleContainsPoint($shape1, shape2);
+        }
+        //Circle-Segment
+        if ($name1 == 'circle' && $name2 == 'segment') {
+            return self::isCircleContainsSegment($shape1, shape2);
+        }
+        //Circle-Circle
+        if ($name1 == 'circle' && $name2 == 'circle') {
+            return self::isCircleContainsCircle($shape1, shape2);
+        }
+        //Circle-Rectangle
+        if ($name1 == 'circle' && $name2 == 'rectangle') {
+            return self::isCircleContainsRectangle($shape1, shape2);
+        }
+
+        //Rectangle-Point
+        if ($name1 == 'rectangle' && $name2 == 'point') {
+            return self::isRectangleContainsPoint($shape1, shape2);
+        }
+        //Rectangle-Segment
+        if ($name1 == 'rectangle' && $name2 == 'segment') {
+            return self::isRectangleContainsSegment($shape1, shape2);
+        }
+        //Rectangle-Circle
+        if ($name1 == 'rectangle' && $name2 == 'circle') {
+            return self::isRectangleContainsCircle($shape1, shape2);
+        }
+        //Rectangle-Rectangle
+        if ($name1 == 'rectangle' && $name2 == 'rectangle') {
+            return self::isRectangleContainsRectangle($shape1, shape2);
         }
 
         return false;
@@ -320,7 +357,122 @@ abstract class GeometryUtils
      */
     private static function isSegmentContainsSegment(Segment $segment1, Segment $segment2): bool
     {
-        return $segment1->getStart()->isEqualTo($segment2->getStart())
-            && $segment1->getEnd()->isEqualTo($segment2->getEnd());
+        return GeometryUtils::isIntersects($segment1, $segment2->getStart())
+            && GeometryUtils::isIntersects($segment1, $segment2->getEnd());
+    }
+
+    /**
+     * @param Segment $segment
+     * @param Point $point
+     * @return bool
+     */
+    private static function isSegmentContainsPoint(Segment $segment, Point $point): bool
+    {
+        return GeometryUtils::isIntersects($segment, $point);
+    }
+
+    /**
+     * @param Circle $circle
+     * @param Point $point
+     * @return bool
+     */
+    private static function isCircleContainsPoint(Circle $circle, Point $point): bool
+    {
+        return $circle->getCenter()->distance($point) <= $circle->getRadius() + self::EPS;
+    }
+
+    /**
+     * @param Circle $circle
+     * @param Segment $segment
+     * @return bool
+     */
+    private static function isCircleContainsSegment(Circle $circle, Segment $segment): bool
+    {
+        return GeometryUtils::isContains($circle, $segment->getStart())
+            && GeometryUtils::isContains($circle, $segment->getEnd());
+    }
+
+    /**
+     * @param Circle $circle1
+     * @param Circle $circle2
+     * @return bool
+     */
+    private static function isCircleContainsCircle(Circle $circle1, Circle $circle2): bool
+    {
+        $centersDistance = $circle1->getCenter()->distance($circle2->getCenter());
+        return $centersDistance + $circle2->getRadius() <= 2 * $circle1->getRadius() + self::EPS ;
+    }
+
+    /**
+     * @param Circle $circle
+     * @param Rectangle $rect
+     * @return bool
+     */
+    private static function isCircleContainsRectangle(Circle $circle, Rectangle $rect)
+    {
+        foreach ($rect->getCorners() as $corner) {
+            if ($circle->getCenter()->distance($corner) > $circle->getRadius() + self::EPS) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param Rectangle $rectangle
+     * @param Point $point
+     * @return bool
+     */
+    private static function isRectangleContainsPoint(Rectangle $rectangle, Point $point): bool
+    {
+        return  $rectangle->getTopLeft()->getX() <= $point->getX() + self::EPS
+            && $rectangle->getTopRight()->getX() >= $point->getX() - self::EPS
+            && $rectangle->getTopLeft()->getY() >= $point->getY() - self::EPS
+            && $rectangle->getBottomRight()->getY() <= $point->getY() + self::EPS;
+    }
+
+    /**
+     * @param Rectangle $rectangle
+     * @param Segment $segment
+     * @return bool
+     */
+    private static function isRectangleContainsSegment(Rectangle $rectangle, Segment $segment): bool
+    {
+        return GeometryUtils::isContains($rectangle, $segment->getStart())
+            && GeometryUtils::isContains($rectangle, $segment->getEnd());
+    }
+
+    /**
+     * @param Rectangle $rectangle
+     * @param Circle $circle
+     * @return bool
+     */
+    private static function isRectangleContainsCircle(Rectangle $rectangle, Circle $circle): bool
+    {
+        if (GeometryUtils::isContains($rectangle, $circle->getCenter())) {
+            return false;
+        }
+        foreach ($rectangle->getSides() as $side) {
+            if (GeometryUtils::isIntersects($side, $circle)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param Rectangle $rect1
+     * @param Rectangle $rect2
+     * @return bool
+     */
+    private static function isRectangleContainsRectangle(Rectangle $rect1, Rectangle $rect2): bool
+    {
+        foreach ($rect2->getCorners() as $corner) {
+            if (!GeometryUtils::isContains($rect1, $corner)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -17,6 +17,7 @@
             <file>tests/AppTest/Geometry/PointTest.php</file>
             <file>tests/AppTest/Geometry/ContainsTest.php</file>
             <file>tests/AppTest/Geometry/IntersectsTest.php</file>
+            <file>tests/AppTest/Geometry/ContainsTest.php</file>
         </testsuite>
     </testsuites>
 

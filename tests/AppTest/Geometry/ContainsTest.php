@@ -13,13 +13,14 @@ class ContainsTest extends TestCase
 {
     /**
      * @dataProvider pointContainsPointProvider
-     * @param array $coords
+     * @param array $p1C
+     * @param array $p2C
      * @param bool $isContains
      */
-    public function testPointContainsPoint(array $coords, bool $isContains)
+    public function testPointContainsPoint(array $p1C, array $p2C, bool $isContains)
     {
-        $p1 = new Point($coords[0], $coords[1]);
-        $p2 = new Point($coords[2], $coords[3]);
+        $p1 = new Point(...$p1C);
+        $p2 = new Point(...$p2C);
 
         $this->assertEquals($isContains, GeometryUtils::isContains($p2, $p1));
         $this->assertEquals($isContains, GeometryUtils::isContains($p1, $p2));
@@ -30,7 +31,6 @@ class ContainsTest extends TestCase
      * @param array $segmentCoords
      * @param array $pointCoords
      * @param bool $isContains
-     * @return array
      */
     public function testSegmentContainsPoint(array $segmentCoords, array $pointCoords, bool $isContains)
     {
@@ -61,9 +61,10 @@ class ContainsTest extends TestCase
      */
     public function pointContainsPointProvider(): array
     {
+        //[p1[x,y], p2[x,y, intersects]
         return [
-            [[10, 10, 10, 10], true], //same points
-            [[100, 100, -10, -10], false] //different point
+            [[10, 10], [10, 10], true], //same points
+            [[100, 100], [-10, -10], false] //different point
         ];
     }
 

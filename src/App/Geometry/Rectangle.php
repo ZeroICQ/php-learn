@@ -125,37 +125,20 @@ class Rectangle implements ShapeInterface
             $this->getLeftSide(),
         ];
     }
-//    /**
-//     * @param Shape $shape
-//     * @return bool
-//     */
-//    public function isContains(Shape $shape): bool
-//    {
-//        switch ($shape->getName()) {
-//            case 'point':
-//                return $this->isContainsPoint($shape);
-//            case 'line':
-//                return $this->isContainsLine($shape);
-//            case 'circle':
-//                return $this->isContainsCircle($shape);
-//            case 'rectangle':
-//                return $this->isContainsRectangle($shape);
-//            default:
-//                return false;
-//        }
-//    }
-//
-//    /**
-//     * @param Point $point
-//     * @return bool
-//     */
-//    public function isContainsPoint(Point $point): bool
-//    {
-//        return  $this->getTopLeft()->getX() <= $point->getX()
-//            && $this->getTopRight()->getX() >= $point->getX()
-//            && $this->getTopLeft()->getY() >= $point->getY()
-//            && $this->getBottomRight()->getY() <= $point->getY();
-//    }
+
+    /**
+     * @return array
+     */
+    public function getCorners():array
+    {
+        return [
+            $this->getTopLeft(),
+            $this->getTopRight(),
+            $this->getBottomRight(),
+            $this->getBottomLeft(),
+        ];
+    }
+
 //
 //    /**
 //     * @param Segment $line
