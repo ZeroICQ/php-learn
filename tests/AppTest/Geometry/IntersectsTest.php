@@ -4,6 +4,7 @@
 namespace AppTest\Geometry;
 
 
+use App\Geometry\Circle;
 use App\Geometry\GeometryUtils;
 use App\Geometry\Point;
 use App\Geometry\Segment;
@@ -27,7 +28,7 @@ class IntersectsTest extends TestCase
     }
 
     /**
-     * @dataProvider segmentIntersectsPoint
+     * @dataProvider segmentIntersectsPointProvider
      * @param array $segmentC
      * @param array $pointC
      * @param $isIntersects
@@ -45,7 +46,7 @@ class IntersectsTest extends TestCase
      * @dataProvider segmentIntersectsSegmentProvider
      * @param array $segment1C
      * @param array $segment2C
-     * @param bool $
+     * @param bool $isIntersects
      */
     public function testSegmentIntersectsSegment(array $segment1C, array $segment2C, bool $isIntersects)
     {
@@ -54,6 +55,21 @@ class IntersectsTest extends TestCase
 
         $this->assertEquals($isIntersects, GeometryUtils::isIntersects($segment1, $segment2));
         $this->assertEquals($isIntersects, GeometryUtils::isIntersects($segment2, $segment1));
+    }
+
+    /**
+     * @dataProvider segmentIntersectsCircleProvider
+     * @param array $segmentC
+     * @param array $circleC
+     * @param bool $isIntersects
+     */
+    public function testSegmentIntersectsCircle(array $segmentC, array $circleC, bool $isIntersects)
+    {
+        $segment = new Segment(...$segmentC);
+        $circle = new Circle(...$circleC);
+
+        $this->assertEquals($isIntersects, GeometryUtils::isIntersects($segment, $circle));
+        $this->assertEquals($isIntersects, GeometryUtils::isIntersects($circle, $segment));
     }
 
     /**
@@ -71,7 +87,7 @@ class IntersectsTest extends TestCase
     /**
      * @return array
      */
-    public function segmentIntersectsPoint(): array
+    public function segmentIntersectsPointProvider(): array
     {
         //[segment1[x1,y1,x2,y2], p[x,y], intersects]
         return [
@@ -93,6 +109,17 @@ class IntersectsTest extends TestCase
             [[0, 0, 10, 10], [0, -1, 10, 9], false], // parallel
             [[0, 0, 10, 10], [10.5, 10.5, 20, 20], false], //same line not intersect
             [[0, 0, 8, 1], [0, 10.1, 6, 0], true], //intersects
+        ];
+    }
+
+    public function segmentIntersectsCircleProvider()
+    {
+        //[segment[x1,y1,x2,y2], circle[x1,y1,radius], intersects]
+        return [
+            [[0, 10, 10, 10], [0, 0, 10], true],//tangent
+            [[7, 17, 9.5, 1], [4, 5, 4], true],//tangent
+            [[2, 10, 7, -1], [4, 5, 4], true],//crossing
+            [[4.5, 6.2, 6.7, 4.4], [4, 5, 4], false],//inside curce
         ];
     }
 }

@@ -3,6 +3,7 @@
 
 namespace App\Geometry;
 
+use App\Utils\Misc;
 
 abstract class GeometryUtils
 {
@@ -35,6 +36,12 @@ abstract class GeometryUtils
         //Segment-Segment
         if ($name1 == 'segment' && $name2 == 'segment') {
             return self::isSegmentIntersectsSegment($shape1, $shape2);
+        }
+        //Segment-Circle
+        if ($name1 == 'segment' && $name2 == 'circle') {
+            return self::isSegmentIntersectsCircle($shape1, $shape2);
+        } elseif ($name1 == 'circle' && $name2 == 'segment') {
+            return self::isSegmentIntersectsCircle($shape2, $shape1);
         }
 
         return false;
@@ -80,6 +87,8 @@ abstract class GeometryUtils
     private static function isPointIntersectsSegment(Point $point, Segment $segment): bool
     {
         $y = $point->getY();
+        $y1 = $segment->getStart()->getY();
+        $y2 = $segment->getEnd()->getY();
 
         $x = $point->getX();
         $x1 = $segment->getStart()->getX();
@@ -89,7 +98,8 @@ abstract class GeometryUtils
 
         // both equation and in range
         return abs($coeffs['A'] * $x + $coeffs['B'] * $y + $coeffs['C']) <= self::EPS
-            && min($x1, $x2) <= $x && $x <= max($x1, $x2);
+            && min($x1, $x2) <= $x && $x <= max($x1, $x2)
+            && min($y1, $y2) <= $y && $x <= max($y1, $y2);
     }
 
     /**
@@ -102,10 +112,61 @@ abstract class GeometryUtils
         $c1 = $segment1->getLineEquationCoeefs();
         $c2 = $segment2->getLineEquationCoeefs();
 
-        //not parallel or same
-        return !($c1['A'] * $c2['B'] - $c2['A'] * $c1['B']) < self::EPS
-            || GeometryUtils::isContains($segment1, $segment2->getStart());
+        $a = $segment1->getStart();
+        $b = $segment1->getEnd();
+        $c = $segment2->getStart();
+        $d = $segment2->getEnd();
 
+        $aX = $segment1->getStart()->getX();
+        $bX = $segment1->getEnd()->getX();
+        $cX = $segment2->getStart()->getX();
+        $dX= $segment2->getEnd()->getX();
+
+        $aY = $segment1->getStart()->getY();
+        $bY = $segment1->getEnd()->getY();
+        $cY = $segment2->getStart()->getY();
+        $dY = $segment2->getEnd()->getY();
+
+        return self::intersect_1($aX, $bX, $cX, $dX)
+            && self::intersect_1($aY, $bY, $cY, $dY)
+            && Misc::sign(self::area($a, $b, $c)) * Misc::sign(self::area($a, $b, $d)) <= 0
+            && Misc::sign(self::area($c, $d, $a)) * Misc::sign(self::area($c, $d, $b)) <= 0;
+    }
+
+    /**
+     * @param float $a
+     * @param float $b
+     * @param float $c
+     * @param float $d
+     * @return bool
+     */
+    private static function intersect_1(float $a, float $b, float $c, float $d): bool
+    {
+        // bounding check
+        if ($a > $b) Misc::swap($a, $b);
+        if ($c > $d) Misc::swap($c, $d);
+        return max($a, $c) <= min($b, $d);
+    }
+
+    /**
+     * @param Point $a
+     * @param Point $b
+     * @param Point $c
+     * @return float
+     */
+    private static function area(Point $a, Point $b, Point $c): float
+    {
+        return ($b->getX() - $a->getX()) * ($c->getY() - $a->getY()) - ($b->getY() - $a->getY()) * ($c->getX() - $a->getX());
+    }
+
+    /**
+     * @param Segment $segment
+     * @param Circle $circle
+     * @return bool
+     */
+    private static function isSegmentIntersectsCircle(Segment $segment, Circle $circle): bool
+    {
+        return abs($segment->getDistanceToPoint($circle->getCenter()) - $circle->getRadius()) - self::EPS;
     }
 
     /**

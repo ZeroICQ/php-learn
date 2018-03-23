@@ -4,10 +4,8 @@
 namespace App\Geometry;
 
 
-class Circle extends Shape
+class Circle implements ShapeInterface
 {
-    protected const SHAPE_NAME = 'circle';
-
     /**
      * @var Point
      */
@@ -46,72 +44,77 @@ class Circle extends Shape
         return 2 * M_PI * $this->radius;
     }
 
-    /**
-     * @param Shape $shape
-     * @return bool
-     */
-    public function isContains(Shape $shape): bool
+//    /**
+//     * @param Shape $shape
+//     * @return bool
+//     */
+//    public function isContains(Shape $shape): bool
+//    {
+//        switch ($shape->getName()) {
+//            case 'point':
+//                return $this->isContainsPoint($shape);
+//            case 'line':
+//                return $this->isContainsLine($shape);
+//            case 'circle':
+//                return $this->isContainsCircle($shape);
+//            case 'rectangle':
+//                return $this->isContainsRectangle($shape);
+//            default:
+//                return false;
+//        }
+//    }
+//
+//    /**
+//     * @param Point $point
+//     * @return bool
+//     */
+//    public function isContainsPoint(Point $point): bool
+//    {
+//        return $this->center->distance($point) <= $this->radius;
+//    }
+//
+//    /**
+//     * @param Segment $line
+//     * @return bool
+//     */
+//    public function isContainsLine(Segment $line): bool
+//    {
+//        return $this->center->distance($line->getStart()) <= $this->radius
+//            && $this->center->distance($line->getEnd()) <= $this->radius;
+//    }
+//
+//    /**
+//     * @param Circle $circle
+//     * @return bool
+//     */
+//    public function isContainsCircle(Circle $circle): bool
+//    {
+//        $biggerCircle  = $this->getRadius() >= $circle->getRadius() ? $this : $circle;
+//        $smallerCircle  = $this->getRadius() < $circle->getRadius() ? $this : $circle;
+//        $biggerDiameter = 2 * $biggerCircle->radius;
+//        $centersDistance = $this->center->distance($circle->center);
+//
+//        return $centersDistance + $smallerCircle->getRadius() <= $biggerDiameter;
+//    }
+//
+//    /**
+//     * @param Rectangle $rect
+//     * @return bool
+//     */
+//    public function isContainsRectangle(Rectangle $rect): bool
+//    {
+//        $r = $this->radius;
+//
+//        return $this->center->distance($rect->getTopLeft()) <= $r
+//        && $this->center->distance($rect->getTopRight()) <= $r
+//        && $this->center->distance($rect->getBottomRight()) <= $r
+//        && $this->center->distance($rect->getBottomLeft()) <= $r;
+//    }
+    public function getName(): string
     {
-        switch ($shape->getName()) {
-            case 'point':
-                return $this->isContainsPoint($shape);
-            case 'line':
-                return $this->isContainsLine($shape);
-            case 'circle':
-                return $this->isContainsCircle($shape);
-            case 'rectangle':
-                return $this->isContainsRectangle($shape);
-            default:
-                return false;
-        }
+        return 'circle';
     }
 
-    /**
-     * @param Point $point
-     * @return bool
-     */
-    public function isContainsPoint(Point $point): bool
-    {
-        return $this->center->distance($point) <= $this->radius;
-    }
-
-    /**
-     * @param Segment $line
-     * @return bool
-     */
-    public function isContainsLine(Segment $line): bool
-    {
-        return $this->center->distance($line->getStart()) <= $this->radius
-            && $this->center->distance($line->getEnd()) <= $this->radius;
-    }
-
-    /**
-     * @param Circle $circle
-     * @return bool
-     */
-    public function isContainsCircle(Circle $circle): bool
-    {
-        $biggerCircle  = $this->getRadius() >= $circle->getRadius() ? $this : $circle;
-        $smallerCircle  = $this->getRadius() < $circle->getRadius() ? $this : $circle;
-        $biggerDiameter = 2 * $biggerCircle->radius;
-        $centersDistance = $this->center->distance($circle->center);
-
-        return $centersDistance + $smallerCircle->getRadius() <= $biggerDiameter;
-    }
-
-    /**
-     * @param Rectangle $rect
-     * @return bool
-     */
-    public function isContainsRectangle(Rectangle $rect): bool
-    {
-        $r = $this->radius;
-
-        return $this->center->distance($rect->getTopLeft()) <= $r
-        && $this->center->distance($rect->getTopRight()) <= $r
-        && $this->center->distance($rect->getBottomRight()) <= $r
-        && $this->center->distance($rect->getBottomLeft()) <= $r;
-    }
 
     /**
      * @return Point
@@ -122,36 +125,10 @@ class Circle extends Shape
     }
 
     /**
-     * @param Point $center
-     */
-    public function setCenter(Point $center): void
-    {
-        $this->center = $center;
-    }
-
-    /**
      * @return float
      */
     public function getRadius(): float
     {
         return $this->radius;
-    }
-
-    /**
-     * @param float $radius
-     */
-    public function setRadius(float $radius): void
-    {
-        $this->radius = $radius;
-    }
-
-    /**
-     * @param Shape $shape
-     * @return bool
-     */
-    public function isIntersect(Shape $shape): bool
-    {
-        // TODO: Implement isIntersect() method.
-        return false;
     }
 }
