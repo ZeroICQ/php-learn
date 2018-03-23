@@ -7,7 +7,7 @@ use App\Utils\Misc;
 
 abstract class GeometryUtils
 {
-    public const EPS = 0.0001;
+    public const EPS = 0.00001;
 
     /**
      * private constructor
@@ -65,6 +65,16 @@ abstract class GeometryUtils
         } elseif ($name1 == 'segment' && $name2 == 'rectangle') {
             return self::isRectangleIntersectsSegment($shape2, $shape1);
         }
+        //Rectangle-Rectangle
+        if ($name1 == 'rectangle' && $name2 == 'rectangle') {
+            return self::isRectangleIntersectsRectangle($shape1, $shape2);
+        }
+        //Rectangle-Circle
+        if ($name1 == 'rectangle' && $name2 == 'circle') {
+            return self::isRectangleIntersectsCircle($shape1, $shape2);
+        } elseif ($name1 == 'circle' && $name2 == 'rectangle') {
+            return self::isRectangleIntersectsCircle($shape2, $shape1);
+        }
 
 
         return false;
@@ -109,20 +119,9 @@ abstract class GeometryUtils
 
     private static function isPointIntersectsSegment(Point $point, Segment $segment): bool
     {
-        $y = $point->getY();
-        $y1 = $segment->getStart()->getY();
-        $y2 = $segment->getEnd()->getY();
-
-        $x = $point->getX();
-        $x1 = $segment->getStart()->getX();
-        $x2 = $segment->getEnd()->getX();
-
-        $coeffs = $segment->getLineEquationCoeefs();
-
-        // both equation and in range
-        return abs($coeffs['A'] * $x + $coeffs['B'] * $y + $coeffs['C']) <= self::EPS
-            && min($x1, $x2) <= $x && $x <= max($x1, $x2)
-            && min($y1, $y2) <= $y && $x <= max($y1, $y2);
+        return abs(self::area($segment->getStart(), $segment->getEnd(), $point)) < self::EPS
+            && ($segment->getStart()->getX() - $point->getX()) * ($segment->getEnd()->getX() - $point->getX())
+             + ($segment->getStart()->getY() - $point->getY()) * ($segment->getEnd()->getY() - $point->getY()) <= self::EPS;
     }
 
     /**
@@ -268,6 +267,36 @@ abstract class GeometryUtils
     {
         foreach ($rect->getSides() as $side) {
             if (GeometryUtils::isIntersects($side, $segment)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param Rectangle $rect1
+     * @param Rectangle $rect2
+     * @return bool
+     */
+    private static function isRectangleIntersectsRectangle(Rectangle $rect1, Rectangle $rect2): bool
+    {
+        foreach ($rect1->getSides() as $side) {
+            if (GeometryUtils::isIntersects($side, $rect2)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param Rectangle $rect
+     * @param Circle $circle
+     * @return bool
+     */
+    private static function isRectangleIntersectsCircle(Rectangle $rect, Circle $circle): bool
+    {
+        foreach ($rect->getSides() as $side) {
+            if (GeometryUtils::isIntersects($side, $circle)) {
                 return true;
             }
         }

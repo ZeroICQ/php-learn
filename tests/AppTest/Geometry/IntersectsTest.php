@@ -119,6 +119,51 @@ class IntersectsTest extends TestCase
     }
 
     /**
+     * @dataProvider rectangleIntersectsSegmentProvider
+     * @param array $rectC
+     * @param array $segmentC
+     * @param bool $isIntersects
+     */
+    public function testRectangleIntersectsSegment(array $rectC, array $segmentC, bool $isIntersects)
+    {
+        $rect = new Rectangle(...$rectC);
+        $segment = new Segment(...$segmentC);
+
+        $this->assertEquals($isIntersects, GeometryUtils::isIntersects($rect, $segment));
+        $this->assertEquals($isIntersects, GeometryUtils::isIntersects($segment, $rect));
+    }
+
+    /**
+     * @dataProvider rectangleIntersectsRectangleProvider
+     * @param array $rect1C
+     * @param array $rect2C
+     * @param bool $isIntersects
+     */
+    public function testRectangleIntersectsRectangle(array $rect1C, array $rect2C, bool $isIntersects)
+    {
+        $rect1 = new Rectangle(...$rect1C);
+        $rect2 = new Rectangle(...$rect2C);
+
+        $this->assertEquals($isIntersects, GeometryUtils::isIntersects($rect1, $rect2));
+        $this->assertEquals($isIntersects, GeometryUtils::isIntersects($rect2, $rect1));
+    }
+
+    /**
+     * @dataProvider rectangleIntersectsCircleProvider
+     * @param array $rectC
+     * @param array $circleC
+     * @param bool $isIntersects
+     */
+    public function testRectangleIntersectsCircle(array $rectC, array $circleC, bool $isIntersects)
+    {
+        $rect = new Rectangle(...$rectC);
+        $circle = new Circle(...$circleC);
+
+        $this->assertEquals($isIntersects, GeometryUtils::isIntersects($rect, $circle));
+        $this->assertEquals($isIntersects, GeometryUtils::isIntersects($circle, $rect));
+    }
+
+    /**
      * @return array
      */
     public function pointIntersectsPointProvider(): array
@@ -168,6 +213,7 @@ class IntersectsTest extends TestCase
             [[4.5, 6.2, 6.7, 4.4], [4, 5, 4], false],//inside circle
             [[5.9, 7.5, 4, 9.5], [4, 5, 4], true],//one end inside circle
             [[5, 6, 4, 1], [4, 5, 4], true],//one on circle
+            [[0, 0, 0, 10], [-1, 5, 1000], false],//inside vertical
         ];
     }
 
@@ -192,7 +238,10 @@ class IntersectsTest extends TestCase
         ];
     }
 
-    public function rectangleIntersectsPointProvider()
+    /**
+     * @return array
+     */
+    public function rectangleIntersectsPointProvider(): array
     {
         //[rectangle[x1,y1,x2,y2], point[x1,y1], intersects]
         return [
@@ -200,6 +249,45 @@ class IntersectsTest extends TestCase
             [[0, 10, 10, 0], [5, 5], false],//inside
             [[0, 10, 10, 0], [100, 100], false],//outside
             [[0, 10, 10, 0], [0, 10], true],//corner
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function rectangleIntersectsSegmentProvider(): array
+    {
+        //[rectangle[x1,y1,x2,y2], segment[x1,y1,x2,y2], intersects]
+        return [
+            [[1, 11, 9, -3], [4, 12, -1, 9], true],
+            [[1, 11, 9, -3], [7, 13, 13, 7], true],//corner
+            [[1, 11, 9, -3], [2, 10, 8, -1.5], false],//inside
+            [[1, 11, 9, -3], [-3, 12, 0, 6], false],//outside
+            [[1, 11, 9, -3], [9, 11, 1, -3], true],//diagonal
+        ];
+    }
+
+    public function rectangleIntersectsRectangleProvider()
+    {
+        //[rectangle1[x1,y1,x2,y2], rectangle1[x1,y1,x2,y2], intersects]
+        return [
+            [[1, 11, 9, -3], [2, 10, 8, -1.5], false],//inside
+            [[1, 11, 9, -3], [4, 12, -1, 9], true],
+            [[1, 11, 9, -3], [0, 9, 4, 4], true],
+            [[1, 11, 9, -3], [10.3, 12.22 , 9, 11], true],//corner
+            [[1, 11, 9, -3], [10.3, 12.22 , 9, 11], true],//corner
+            [[1, 11, 9, -3], [-3, 12, 0, 6], false],//outside
+        ];
+    }
+
+    public function rectangleIntersectsCircleProvider()
+    {
+        //[rectangle1[x1,y1,x2,y2], circle[x1,y1,radius], intersects]
+        return [
+            [[1, 10, 8, -1], [4, 5, 3], false],//inside tangent
+            [[0, 0, 10, 10], [-1, 5, 8.4], true],//inscribed
+            [[0, 0, 10, 10], [-1, 5, 1000], false],//rect inside circle
+            [[2, 12, 12, -4], [16, 14, 4.5], true],//inscribed
         ];
     }
 }
