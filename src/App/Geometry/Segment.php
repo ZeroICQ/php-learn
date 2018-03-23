@@ -67,45 +67,7 @@ class Segment implements ShapeInterface
             'C' => $C
         ];
     }
-//
-//    /**
-//     * @param Shape $shape
-//     * @return bool
-//     */
-//    public function isContains(Shape $shape): bool
-//    {
-//        switch ($shape->getName()) {
-//            case 'point';
-//                return $this->isContainsPoint($shape);
-//            case 'line':
-//                return $this->isContainsLine($shape);
-//            default:
-//                return false;
-//        }
-//    }
 
-//    /**
-//     * @param Point $point
-//     * @return bool
-//     */
-//    public function isContainsPoint(Point $point): bool
-//    {
-//        $eps = 0.0001;
-//
-//        $y = $point->getY();
-//        $y1 = $this->getStart()->getY();
-//        $y2 = $this->getEnd()->getY();
-//
-//        $x = $point->getX();
-//        $x1 = $this->getStart()->getX();
-//        $x2 = $this->getEnd()->getX();
-//
-//        $coeffs = $this->getLineEquationCoeefs();
-//
-//        $isLineEquation = abs($coeffs['A'] * $x + $coeffs['B'] * $y + $coeffs['C']) <= $eps;
-//        $isInXRange = min($x1, $x2) <= $x && $x <= max($x1, $x2);
-//        return $isLineEquation && $isInXRange;
-//    }
 //
 //    /**
 //     * @param Segment $shape

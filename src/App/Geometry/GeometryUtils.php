@@ -6,7 +6,7 @@ namespace App\Geometry;
 
 abstract class GeometryUtils
 {
-    private const EPS = 0.0001;
+    public const EPS = 0.0001;
 
     /**
      * private constructor
@@ -49,7 +49,10 @@ abstract class GeometryUtils
         } elseif ($name1 == 'segment' && $name2 == 'point') {
             return self::isPointIntersectsSegment($shape2, $shape1);
         }
-
+        //Segment-Segment
+        if ($name1 == 'segment' && $name2 == 'segment') {
+            return self::isSegmentContainsSegment($shape1, $shape2);
+        }
 
         return false;
     }
@@ -87,5 +90,11 @@ abstract class GeometryUtils
     private static function isPointContainsPoint(Point $point1, Point $point2): bool
     {
         return $point1->isEqualTo($point2);
+    }
+
+    private static function isSegmentContainsSegment(Segment $segment1, Segment $segment2)
+    {
+        return $segment1->getStart()->isEqualTo($segment2->getStart())
+            && $segment1->getEnd()->isEqualTo($segment2->getEnd());
     }
 }

@@ -43,7 +43,8 @@ class Point implements ShapeInterface
      */
     public function isEqualTo(Point $point)
     {
-        return $this->getX() == $point->getX() && $this->getY() == $point->getY();
+        return abs($this->getX() - $point->getX()) < GeometryUtils::EPS
+            && abs($this->getY() - $point->getY()) < GeometryUtils::EPS;
     }
 
     /**

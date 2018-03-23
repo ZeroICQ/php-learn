@@ -27,17 +27,33 @@ class ContainsTest extends TestCase
 
     /**
      * @dataProvider segmentContainsPointProvider
-     * @param $segmentCoords
-     * @param $pointCoords
-     * @param $isContains
+     * @param array $segmentCoords
+     * @param array $pointCoords
+     * @param bool $isContains
+     * @return array
      */
-    public function testSegmentContainsPoint($segmentCoords, $pointCoords, $isContains)
+    public function testSegmentContainsPoint(array $segmentCoords, array $pointCoords, bool $isContains)
     {
         $segment = new Segment(...$segmentCoords);
         $point = new Point(...$pointCoords);
 
         $this->assertEquals($isContains, GeometryUtils::isContains($segment, $point));
         $this->assertEquals($isContains, GeometryUtils::isContains($point, $segment));
+    }
+
+    /**
+     * @dataProvider segmentContainsSegmentProvider
+     * @param array $segment1Coords
+     * @param array $segment2Coords
+     * @param bool $isContains
+     */
+    public function testSegmentContainsSegment(array $segment1Coords, array $segment2Coords, bool $isContains)
+    {
+        $segment1 = new Segment(...$segment1Coords);
+        $segment2 = new Segment(...$segment2Coords);
+
+        $this->assertEquals($isContains, GeometryUtils::isContains($segment1, $segment2));
+        $this->assertEquals($isContains, GeometryUtils::isContains($segment2, $segment1));
     }
 
     /**
@@ -61,6 +77,19 @@ class ContainsTest extends TestCase
             [[0, 0, 10, 10], [5, 5], true],
             [[0, 0, 10, 10], [-5, -5], false], //same line but not in segment
             [[0, 10, 15, 10], [8, 5], false]
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function segmentContainsSegmentProvider(): array
+    {
+        //[segment1[x1,y1,x2,y2], [segment1[x1,y1,x2,y2], contain]
+        return [
+            [[1, 2, 3, 4], [1, 2, 3, 4], true], //same
+            [[0, 0, 0, 10], [-5, 5, 5, 5], false], //different
+            [[0, 0, 5, 5], [0, 0, 10, 10], false], // same line but different length
         ];
     }
 
