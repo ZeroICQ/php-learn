@@ -119,7 +119,9 @@ class IntersectsTest extends TestCase
             [[0, 10, 10, 10], [0, 0, 10], false],//tangent
             [[7, 17, 9.5, 1], [4, 5, 4], false],//tangent
             [[2, 10, 7, -1], [4, 5, 4], true],//crossing
-            [[4.5, 6.2, 6.7, 4.4], [4, 5, 4], false],//inside curce
+            [[4.5, 6.2, 6.7, 4.4], [4, 5, 4], false],//inside circle
+            [[5.9, 7.5, 4, 9.5], [4, 5, 4], true],//one end inside circle
+            [[5, 6, 4, 1], [4, 5, 4], true],//one on circle
         ];
     }
 }
