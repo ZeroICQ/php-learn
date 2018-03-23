@@ -22,12 +22,22 @@ abstract class GeometryUtils
     {
         $name1 = $shape1->getName();
         $name2 = $shape2->getName();
-
+        //Point-Point
         if ($name1 == 'point' && $name2 == 'point') {
             return self::isPointIntersectsPoint($shape1, $shape2);
-        } else {
-            return false;
         }
+        //Point-Segment
+        if ($name1 == 'point' && $name2 == 'segment') {
+            return self::isPointIntersectsSegment($shape1, $shape2);
+        } elseif ($name1 == 'segment' && $name2 == 'point') {
+            return self::isPointIntersectsSegment($shape2, $shape1);
+        }
+        //Segment-Segment
+        if ($name1 == 'segment' && $name2 == 'segment') {
+            return self::isSegmentIntersectsSegment($shape1, $shape2);
+        }
+
+        return false;
     }
 
     /**
@@ -80,6 +90,22 @@ abstract class GeometryUtils
         // both equation and in range
         return abs($coeffs['A'] * $x + $coeffs['B'] * $y + $coeffs['C']) <= self::EPS
             && min($x1, $x2) <= $x && $x <= max($x1, $x2);
+    }
+
+    /**
+     * @param Segment $segment1
+     * @param Segment $segment2
+     * @return bool
+     */
+    private static function isSegmentIntersectsSegment(Segment $segment1, Segment $segment2): bool
+    {
+        $c1 = $segment1->getLineEquationCoeefs();
+        $c2 = $segment2->getLineEquationCoeefs();
+
+        //not parallel or same
+        return !($c1['A'] * $c2['B'] - $c2['A'] * $c1['B']) < self::EPS
+            || GeometryUtils::isContains($segment1, $segment2->getStart());
+
     }
 
     /**

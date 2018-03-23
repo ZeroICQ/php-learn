@@ -70,45 +70,9 @@ class Segment implements ShapeInterface
 
 //
 //    /**
-//     * @param Segment $shape
-//     * @return bool
-//     */
-//    public function isContainsLine(Segment $shape): bool
-//    {
-//        return $this->getStart()->isEqualTo($shape->getStart()) && $this->getEnd()->isEqualTo($shape->getEnd());
-//    }
-//
-//    /**
-//     * @param Shape $shape
-//     * @return bool
-//     */
-//    public function isIntersect(Shape $shape): bool
-//    {
-//        switch ($shape->getName()) {
-//            case 'point':
-//                return $this->isContains($shape);
-//            case 'line':
-//                return $this->isIntersectLine($shape);
-//            case 'circle':
-//                return $this->isIntersectCircle($shape);
-//            default:
-//                return false;
-//        }
-//    }
-//
-//    /**
 //     * @param Segment $line
 //     * @return bool
 //     */
-//    public function isIntersectLine(Segment $line): bool
-//    {
-//        $c1 = $this->getLineEquationCoeefs();
-//        $c2 = $this->getLineEquationCoeefs();
-//
-//        //parallel or same
-//        return !($c1['A'] * $c2['B'] - $c2['A'] * $c1['B'])
-//            || $this->isContains($line->getStart());
-//    }
 //
 //    /**
 //     * @return bool
