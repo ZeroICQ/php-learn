@@ -4,10 +4,8 @@
 namespace App\Geometry;
 
 
-class Point extends Shape
+class Point implements ShapeInterface
 {
-    protected const SHAPE_NAME = 'point';
-
     /**
      * @var float
      */
@@ -49,6 +47,14 @@ class Point extends Shape
     }
 
     /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'point';
+    }
+
+    /**
      * @return float
      */
     public function getX(): float
@@ -57,29 +63,11 @@ class Point extends Shape
     }
 
     /**
-     * @param float $x
-     */
-    public function setX(float $x): void
-    {
-        $this->x = $x;
-    }
-
-    /**
      * @return float
      */
     public function getY(): float
     {
         return $this->y;
-    }
-
-    /**
-     * @param float $y
-     * @return Point
-     */
-    public function setY(float $y): Point
-    {
-        $this->y = $y;
-        return $this;
     }
 
     /**
@@ -97,23 +85,4 @@ class Point extends Shape
     {
         return 0;
     }
-
-    /**
-     * @param Shape $shape
-     * @return bool
-     */
-    public function isContains(Shape $shape): bool
-    {
-        return $shape->getName() == 'point' && $this->isEqualTo($shape);
-    }
-
-    /**
-     * @param Shape $shape
-     * @return bool
-     */
-    public function isIntersect(Shape $shape): bool
-    {
-        return $shape->isContains($this);
-    }
-
 }

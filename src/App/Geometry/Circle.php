@@ -76,10 +76,10 @@ class Circle extends Shape
     }
 
     /**
-     * @param Line $line
+     * @param Segment $line
      * @return bool
      */
-    public function isContainsLine(Line $line): bool
+    public function isContainsLine(Segment $line): bool
     {
         return $this->center->distance($line->getStart()) <= $this->radius
             && $this->center->distance($line->getEnd()) <= $this->radius;

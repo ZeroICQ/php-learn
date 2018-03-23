@@ -108,10 +108,10 @@ class Rectangle extends Shape
     }
 
     /**
-     * @param Line $line
+     * @param Segment $line
      * @return bool
      */
-    public function isContainsLine(Line $line): bool
+    public function isContainsLine(Segment $line): bool
     {
         return $this->isContainsPoint($line->getStart()) && $this->isContainsPoint($line->getEnd());
     }
