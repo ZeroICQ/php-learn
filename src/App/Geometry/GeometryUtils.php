@@ -166,7 +166,41 @@ abstract class GeometryUtils
      */
     private static function isSegmentIntersectsCircle(Segment $segment, Circle $circle): bool
     {
-        return abs($segment->getDistanceToPoint($circle->getCenter()) - $circle->getRadius()) - self::EPS;
+        $r = $circle->getRadius();
+
+        $aX = $segment->getStart()->getX() - $circle->getCenter()->getX();
+        $aY = $segment->getStart()->getY() - $circle->getCenter()->getY();
+        $bX = $segment->getEnd()->getX() - $circle->getCenter()->getX();
+        $bY = $segment->getEnd()->getY() - $circle->getCenter()->getY();
+
+        $A = $aY - $bY;
+        $B = $bX - $aX;
+        $C = $aX * $bY - $bX * $aY;
+
+        $x0 = -$A * $C / ($A * $A + $B * $B);
+        $y0 = -$B * $C / ($A * $A + $B * $B);
+
+        if ($C * $C > $r * $r * ($A * $A + $B * $B) + self::EPS) {
+            return false;
+        } elseif (abs($C * $C - $r * $r * ($A * $A + $B * $B)) < self::EPS) {
+            // one point
+            return false;//tangents
+        } else {
+            $d = $r * $r - $C * $C/($A * $A + $B * $B);
+            $mult = sqrt($d/(($A * $A + $B * $B)));
+
+            $p1 = new Point(
+                $x0 + $B * $mult + $circle->getCenter()->getX(),
+                $y0 - $A * $mult + $circle->getCenter()->getY()
+            );
+
+            $p2 = new Point(
+                $x0 - $B * $mult + $circle->getCenter()->getX(),
+                $y0 + $A * $mult + $circle->getCenter()->getY()
+            );
+            return self::isContains($segment, $p1) || self::isContains($segment, $p2);
+        }
+
     }
 
     /**
