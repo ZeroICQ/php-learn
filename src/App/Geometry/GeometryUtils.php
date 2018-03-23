@@ -7,7 +7,7 @@ use App\Utils\Misc;
 
 abstract class GeometryUtils
 {
-    public const EPS = 0.00001;
+    public const EPS = 0.0000001;
 
     /**
      * private constructor
@@ -109,36 +109,36 @@ abstract class GeometryUtils
 
         //Circle-Point
         if ($name1 == 'circle' && $name2 == 'point') {
-            return self::isCircleContainsPoint($shape1, shape2);
+            return self::isCircleContainsPoint($shape1, $shape2);
         }
         //Circle-Segment
         if ($name1 == 'circle' && $name2 == 'segment') {
-            return self::isCircleContainsSegment($shape1, shape2);
+            return self::isCircleContainsSegment($shape1, $shape2);
         }
         //Circle-Circle
         if ($name1 == 'circle' && $name2 == 'circle') {
-            return self::isCircleContainsCircle($shape1, shape2);
+            return self::isCircleContainsCircle($shape1, $shape2);
         }
         //Circle-Rectangle
         if ($name1 == 'circle' && $name2 == 'rectangle') {
-            return self::isCircleContainsRectangle($shape1, shape2);
+            return self::isCircleContainsRectangle($shape1, $shape2);
         }
 
         //Rectangle-Point
         if ($name1 == 'rectangle' && $name2 == 'point') {
-            return self::isRectangleContainsPoint($shape1, shape2);
+            return self::isRectangleContainsPoint($shape1, $shape2);
         }
         //Rectangle-Segment
         if ($name1 == 'rectangle' && $name2 == 'segment') {
-            return self::isRectangleContainsSegment($shape1, shape2);
+            return self::isRectangleContainsSegment($shape1, $shape2);
         }
         //Rectangle-Circle
         if ($name1 == 'rectangle' && $name2 == 'circle') {
-            return self::isRectangleContainsCircle($shape1, shape2);
+            return self::isRectangleContainsCircle($shape1, $shape2);
         }
         //Rectangle-Rectangle
         if ($name1 == 'rectangle' && $name2 == 'rectangle') {
-            return self::isRectangleContainsRectangle($shape1, shape2);
+            return self::isRectangleContainsRectangle($shape1, $shape2);
         }
 
         return false;

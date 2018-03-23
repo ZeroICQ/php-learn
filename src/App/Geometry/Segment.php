@@ -46,58 +46,6 @@ class Segment implements ShapeInterface
     }
 
     /**
-     * Ax+By+C=0
-     * @return array
-     */
-    public function getLineEquationCoeefs(): array
-    {
-        $y1 = $this->getStart()->getY();
-        $y2 = $this->getEnd()->getY();
-
-        $x1 = $this->getStart()->getX();
-        $x2 = $this->getEnd()->getX();
-
-        $A = $y1 - $y2;
-        $B = $x2 - $x1;
-        $C = $x1 * $y2 - $x2 * $y1;
-
-        return [
-            'A' => $A,
-            'B' => $B,
-            'C' => $C
-        ];
-    }
-
-//
-//    /**
-//     * @param Segment $line
-//     * @return bool
-//     */
-//
-//    /**
-//     * @return bool
-//     */
-//    public function isIntersectCircle(Circle $circle): bool
-//    {
-//        //        AND IN RANGE!!
-//        $r = $circle->getRadius();
-//        return $this->getDistanceToPoint($circle);
-//    }
-
-    /**
-     * @param Point $point
-     * @return float
-     */
-    public function getDistanceToPoint(Point $point): float
-    {
-        $coeffs = $this->getLineEquationCoeefs();
-        return abs(
-            ($coeffs['A'] * $point->getX() + $coeffs['B'] * $point->getY() + $coeffs['C'])
-            / sqrt(pow($coeffs['A'], 2) + pow($coeffs['B'], 2))
-        );
-    }
-
-    /**
      * @return string
      */
     public function getName(): string

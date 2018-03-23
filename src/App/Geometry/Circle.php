@@ -49,7 +49,6 @@ class Circle implements ShapeInterface
         return 'circle';
     }
 
-
     /**
      * @return Point
      */

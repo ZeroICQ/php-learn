@@ -4,6 +4,7 @@
 namespace AppTest\Geometry;
 
 
+use App\Geometry\Circle;
 use App\Geometry\GeometryUtils;
 use App\Geometry\Point;
 use App\Geometry\Segment;
@@ -22,8 +23,15 @@ class ContainsTest extends TestCase
         $p1 = new Point(...$p1C);
         $p2 = new Point(...$p2C);
 
-        $this->assertEquals($isContains, GeometryUtils::isContains($p2, $p1));
         $this->assertEquals($isContains, GeometryUtils::isContains($p1, $p2));
+    }
+
+    public function testPointContainsSegment()
+    {
+        $point = new Point(10, 10);
+        $segment = new Segment(1, 2, 3, 4);
+
+        $this->assertFalse(GeometryUtils::isContains($point, $segment));
     }
 
     /**
@@ -38,7 +46,6 @@ class ContainsTest extends TestCase
         $point = new Point(...$pointCoords);
 
         $this->assertEquals($isContains, GeometryUtils::isContains($segment, $point));
-        $this->assertEquals($isContains, GeometryUtils::isContains($point, $segment));
     }
 
     /**
@@ -53,7 +60,34 @@ class ContainsTest extends TestCase
         $segment2 = new Segment(...$segment2Coords);
 
         $this->assertEquals($isContains, GeometryUtils::isContains($segment1, $segment2));
-        $this->assertEquals($isContains, GeometryUtils::isContains($segment2, $segment1));
+    }
+
+    /**
+     * @dataProvider circleContainsPointProvider
+     * @param array $circleC
+     * @param array $pointC
+     * @param $isContains
+     */
+    public function testCircleContainsPoint(array $circleC, array $pointC, bool $isContains)
+    {
+        $circle = new Circle(...$circleC);
+        $point = new Point(...$pointC);
+
+        $this->assertEquals($isContains, GeometryUtils::isContains($circle, $point));
+    }
+
+    /**
+     * @dataProvider circleContainsSegmentProvider
+     * @param array $circleC
+     * @param array $segmentC
+     * @param bool $isContains
+     */
+    public function testCircleContainsSegment(array $circleC, array $segmentC, bool $isContains)
+    {
+        $circle = new Circle(...$circleC);
+        $segment = new Segment(...$segmentC);
+
+        $this->assertEquals($isContains, GeometryUtils::isContains($circle, $segment));
     }
 
     /**
@@ -86,11 +120,36 @@ class ContainsTest extends TestCase
      */
     public function segmentContainsSegmentProvider(): array
     {
-        //[segment1[x1,y1,x2,y2], [segment1[x1,y1,x2,y2], contain]
+        //[segment1[x1,y1,x2,y2], segment1[x1,y1,x2,y2], contain]
         return [
             [[1, 2, 3, 4], [1, 2, 3, 4], true], //same
             [[0, 0, 0, 10], [-5, 5, 5, 5], false], //different
             [[0, 0, 5, 5], [0, 0, 10, 10], false], // same line but different length
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function circleContainsPointProvider(): array
+    {
+        //[circle[x1,y1,radius], p[x1,y1], contains]
+        return [
+            [[18, 12, 6], [11.9, 12], false], //tangent
+            [[16, 14, 4.5], [13, 13], true], //contains
+            [[16, 14, 4.5], [200, 200], false], //not contains
+        ];
+    }
+
+    public function circleContainsSegmentProvider()
+    {
+        //[circle[x1,y1,radius], segment[x1,y1,x2,y2], contains]
+        return [
+            [[18, 12, 6], [24, 20, 24, 6], false], //tangent
+            [[18, 12, 6], [18, 20, 18, 6], false], //one end out
+            [[18, 12, 6], [8, 20, 26, 6], false], //cross
+            [[18, 12, 6], [16, 16, 22, 12], true], //inside
+            [[18, 12, 6], [12, 12, 20, 12], true], //one end on circle
         ];
     }
 
