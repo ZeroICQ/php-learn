@@ -109,9 +109,6 @@ abstract class GeometryUtils
      */
     private static function isSegmentIntersectsSegment(Segment $segment1, Segment $segment2): bool
     {
-        $c1 = $segment1->getLineEquationCoeefs();
-        $c2 = $segment2->getLineEquationCoeefs();
-
         $a = $segment1->getStart();
         $b = $segment1->getEnd();
         $c = $segment2->getStart();
@@ -200,7 +197,6 @@ abstract class GeometryUtils
             );
             return self::isContains($segment, $p1) || self::isContains($segment, $p2);
         }
-
     }
 
     /**
