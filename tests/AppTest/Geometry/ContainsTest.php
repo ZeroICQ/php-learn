@@ -176,6 +176,18 @@ class ContainsTest extends TestCase
         $this->assertEquals($isContains, GeometryUtils::isContains($rect1, $rect2));
     }
 
+    public function testWrongShape()
+    {
+        $stub = $this->createMock(Circle::class);
+
+        $stub->method('getName')
+            ->willReturn('no such shape');
+        $this->assertEquals(false, GeometryUtils::isContains($stub, $stub));
+
+        $segment= new Segment(0, 0, 1, 1);
+        $this->assertEquals(false, GeometryUtils::isContains($segment, $stub));
+    }
+
     /**
      * @return array
      */

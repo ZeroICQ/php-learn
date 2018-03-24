@@ -163,6 +163,15 @@ class IntersectsTest extends TestCase
         $this->assertEquals($isIntersects, GeometryUtils::isIntersects($circle, $rect));
     }
 
+    public function testWrongShape()
+    {
+        $stub = $this->createMock(Circle::class);
+
+        $stub->method('getName')
+            ->willReturn('no such shape');
+        $this->assertEquals(false, GeometryUtils::isIntersects($stub, $stub));
+    }
+
     /**
      * @return array
      */
