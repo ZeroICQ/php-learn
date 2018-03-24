@@ -449,7 +449,7 @@ abstract class GeometryUtils
      */
     private static function isRectangleContainsCircle(Rectangle $rectangle, Circle $circle): bool
     {
-        if (GeometryUtils::isContains($rectangle, $circle->getCenter())) {
+        if (!GeometryUtils::isContains($rectangle, $circle->getCenter())) {
             return false;
         }
         foreach ($rectangle->getSides() as $side) {
