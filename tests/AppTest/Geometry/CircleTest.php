@@ -18,7 +18,7 @@ class CircleTest extends TestCase
         $this->assertEquals($actualArea, $circle->getArea());
     }
 
-    public function testPerimeterRnd()
+    public function testPerimeter()
     {
         $radius = 10;
         $circle = new Circle(0, 0, $radius);
