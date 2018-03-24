@@ -6,6 +6,7 @@ namespace App\Geometry;
 
 class Rectangle implements ShapeInterface
 {
+    public const NAME = 'rectangle';
     /**
      * @var Point
      */
@@ -34,7 +35,7 @@ class Rectangle implements ShapeInterface
      */
     public function getName(): string
     {
-        return 'rectangle';
+        return self::NAME;
     }
 
     /**

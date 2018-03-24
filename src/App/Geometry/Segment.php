@@ -6,6 +6,7 @@ namespace App\Geometry;
 
 class Segment implements ShapeInterface
 {
+    public const NAME = 'segment';
     /**
      * @var Point
      */
@@ -50,7 +51,7 @@ class Segment implements ShapeInterface
      */
     public function getName(): string
     {
-        return 'segment';
+        return self::NAME;
     }
 
     /**

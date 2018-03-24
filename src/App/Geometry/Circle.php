@@ -6,6 +6,8 @@ namespace App\Geometry;
 
 class Circle implements ShapeInterface
 {
+    public const NAME = 'circle';
+
     /**
      * @var Point
      */
@@ -46,7 +48,7 @@ class Circle implements ShapeInterface
 
     public function getName(): string
     {
-        return 'circle';
+        return self::NAME;
     }
 
     /**

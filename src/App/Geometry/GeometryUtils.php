@@ -24,55 +24,55 @@ abstract class GeometryUtils
         $name1 = $shape1->getName();
         $name2 = $shape2->getName();
         //Point-Point
-        if ($name1 == 'point' && $name2 == 'point') {
+        if ($name1 == Point::NAME && $name2 == Point::NAME) {
             return self::isPointIntersectsPoint($shape1, $shape2);
         }
         //Point-Segment
-        if ($name1 == 'point' && $name2 == 'segment') {
+        if ($name1 == Point::NAME && $name2 == Segment::NAME) {
             return self::isPointIntersectsSegment($shape1, $shape2);
-        } elseif ($name1 == 'segment' && $name2 == 'point') {
+        } elseif ($name1 == Segment::NAME && $name2 == Point::NAME) {
             return self::isPointIntersectsSegment($shape2, $shape1);
         }
         //Segment-Segment
-        if ($name1 == 'segment' && $name2 == 'segment') {
+        if ($name1 == Segment::NAME && $name2 == Segment::NAME) {
             return self::isSegmentIntersectsSegment($shape1, $shape2);
         }
         //Segment-Circle
-        if ($name1 == 'segment' && $name2 == 'circle') {
+        if ($name1 == Segment::NAME && $name2 == Circle::NAME) {
             return self::isSegmentIntersectsCircle($shape1, $shape2);
-        } elseif ($name1 == 'circle' && $name2 == 'segment') {
+        } elseif ($name1 == Circle::NAME && $name2 == Segment::NAME) {
             return self::isSegmentIntersectsCircle($shape2, $shape1);
         }
         //Point-Circle
-        if ($name1 == 'point' && $name2 == 'circle') {
+        if ($name1 == Point::NAME && $name2 == Circle::NAME) {
             return self::isPointIntersectsCircle($shape1, $shape2);
-        } elseif ($name1 == 'circle' && $name2 == 'point') {
+        } elseif ($name1 == Circle::NAME && $name2 == Point::NAME) {
             return self::isPointIntersectsCircle($shape2, $shape1);
         }
         //Circle-Circle
-        if ($name1 == 'circle' && $name2 == 'circle') {
+        if ($name1 == Circle::NAME && $name2 == Circle::NAME) {
             return self::isCircleIntersectsCircle($shape1, $shape2);
         }
         //Rectangle-Point
-        if ($name1 == 'rectangle' && $name2 == 'point') {
+        if ($name1 == Rectangle::NAME && $name2 == Point::NAME) {
             return self::isRectangleIntersectsPoint($shape1, $shape2);
-        } elseif ($name1 == 'point' && $name2 == 'rectangle') {
+        } elseif ($name1 == Point::NAME && $name2 == Rectangle::NAME) {
             return self::isRectangleIntersectsPoint($shape2, $shape1);
         }
         //Rectangle-Segment
-        if ($name1 == 'rectangle' && $name2 == 'segment') {
+        if ($name1 == Rectangle::NAME && $name2 == Segment::NAME) {
             return self::isRectangleIntersectsSegment($shape1, $shape2);
-        } elseif ($name1 == 'segment' && $name2 == 'rectangle') {
+        } elseif ($name1 == Segment::NAME && $name2 == Rectangle::NAME) {
             return self::isRectangleIntersectsSegment($shape2, $shape1);
         }
         //Rectangle-Rectangle
-        if ($name1 == 'rectangle' && $name2 == 'rectangle') {
+        if ($name1 == Rectangle::NAME && $name2 == Rectangle::NAME) {
             return self::isRectangleIntersectsRectangle($shape1, $shape2);
         }
         //Rectangle-Circle
-        if ($name1 == 'rectangle' && $name2 == 'circle') {
+        if ($name1 == Rectangle::NAME && $name2 == Circle::NAME) {
             return self::isRectangleIntersectsCircle($shape1, $shape2);
-        } elseif ($name1 == 'circle' && $name2 == 'rectangle') {
+        } elseif ($name1 == Circle::NAME && $name2 == Rectangle::NAME) {
             return self::isRectangleIntersectsCircle($shape2, $shape1);
         }
 
@@ -89,18 +89,18 @@ abstract class GeometryUtils
         $name1 = $shape1->getName();
         $name2 = $shape2->getName();
         //Point
-        if ($name1 == 'point') {
-            if ($name2 == 'point') {
+        if ($name1 == Point::NAME) {
+            if ($name2 == Point::NAME) {
                 return self::isPointContainsPoint($shape1, $shape2);
             } else {
                 return false;
             }
         }
         //Segment
-        if ($name1 == 'segment') {
-            if ($name2 == 'point') {
+        if ($name1 == Segment::NAME) {
+            if ($name2 == Point::NAME) {
                 return self::isSegmentContainsPoint($shape1, $shape2);
-            } elseif ($name2 == 'segment') {
+            } elseif ($name2 == Segment::NAME) {
                 return self::isSegmentContainsSegment($shape1, $shape2);
             } else {
                 return false;
@@ -108,36 +108,36 @@ abstract class GeometryUtils
         }
 
         //Circle-Point
-        if ($name1 == 'circle' && $name2 == 'point') {
+        if ($name1 == Circle::NAME && $name2 == Point::NAME) {
             return self::isCircleContainsPoint($shape1, $shape2);
         }
         //Circle-Segment
-        if ($name1 == 'circle' && $name2 == 'segment') {
+        if ($name1 == Circle::NAME && $name2 == Segment::NAME) {
             return self::isCircleContainsSegment($shape1, $shape2);
         }
         //Circle-Circle
-        if ($name1 == 'circle' && $name2 == 'circle') {
+        if ($name1 == Circle::NAME && $name2 == Circle::NAME) {
             return self::isCircleContainsCircle($shape1, $shape2);
         }
         //Circle-Rectangle
-        if ($name1 == 'circle' && $name2 == 'rectangle') {
+        if ($name1 == Circle::NAME && $name2 == Rectangle::NAME) {
             return self::isCircleContainsRectangle($shape1, $shape2);
         }
 
         //Rectangle-Point
-        if ($name1 == 'rectangle' && $name2 == 'point') {
+        if ($name1 == Rectangle::NAME && $name2 == Point::NAME) {
             return self::isRectangleContainsPoint($shape1, $shape2);
         }
         //Rectangle-Segment
-        if ($name1 == 'rectangle' && $name2 == 'segment') {
+        if ($name1 == Rectangle::NAME && $name2 == Segment::NAME) {
             return self::isRectangleContainsSegment($shape1, $shape2);
         }
         //Rectangle-Circle
-        if ($name1 == 'rectangle' && $name2 == 'circle') {
+        if ($name1 == Rectangle::NAME && $name2 == Circle::NAME) {
             return self::isRectangleContainsCircle($shape1, $shape2);
         }
         //Rectangle-Rectangle
-        if ($name1 == 'rectangle' && $name2 == 'rectangle') {
+        if ($name1 == Rectangle::NAME && $name2 == Rectangle::NAME) {
             return self::isRectangleContainsRectangle($shape1, $shape2);
         }
 

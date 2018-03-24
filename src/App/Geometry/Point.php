@@ -6,6 +6,7 @@ namespace App\Geometry;
 
 class Point implements ShapeInterface
 {
+    public const NAME = 'point';
     /**
      * @var float
      */
@@ -52,7 +53,7 @@ class Point implements ShapeInterface
      */
     public function getName(): string
     {
-        return 'point';
+        return self::NAME;
     }
 
     /**
